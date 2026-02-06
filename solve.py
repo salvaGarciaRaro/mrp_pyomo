@@ -1,5 +1,6 @@
 import argparse
 import json
+import os
 from typing import Dict, Any, Iterable
 
 import pandas as pd
@@ -411,10 +412,11 @@ def print_plan_pivot(m: pyo.ConcreteModel):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--excel-input", dest="excel_input", default="input.xls", help="Path to input Excel file")
+    parser.add_argument("--excel-input", dest="excel_input", default="input.xlsx", help="Path to input Excel file")
     parser.add_argument("--json-output", dest="json_output", default="data.json", help="Path to write data.json")
-    parser.add_argument("--excel-output", dest="excel_output", default="mrp_result.xls", help="Path to output Excel file")
+    parser.add_argument("--excel-output", dest="excel_output", default="mrp_result.xlsx", help="Path to output Excel file")
     parser.add_argument("--json-input", dest="json_input", default="data.json", help="Path to input data.json")
+    parser.add_argument("--no-open", dest="no_open", action="store_true", help="Do not open Excel files after run")
     args = parser.parse_args()
 
     try:
@@ -431,3 +433,12 @@ if __name__ == "__main__":
     print_plan_pivot(model)
 
     write_output_excel(args.excel_output, model)
+
+    # Open input/output files (best-effort)
+    if not args.no_open:
+        for path in [args.excel_input, args.excel_output]:
+            if path and os.path.exists(path):
+                try:
+                    os.startfile(path)
+                except Exception:
+                    pass
