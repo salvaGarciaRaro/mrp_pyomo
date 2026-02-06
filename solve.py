@@ -89,16 +89,19 @@ def clean(v, eps=1e-6):
 
 
 def print_plan(m: pyo.ConcreteModel):
-    print("\nProd | Per | IndDem | RelMake | RelBuy | Receipt | EndInv | EndBacklog")
+    print("\nProd | Per | IndDem | DepDem | TotDem | RelMake | RelBuy | TotalRcpt | EndInv | EndBacklog")
     print("-" * 78)
     for p in m.P:
         for t in m.T:
+            tot_dem = pyo.value(m.d_ind[p, t]) + pyo.value(m.d_dep[p, t])
             print(
                 f"{p:>4} | {t:>3} | "
-                f"{clean(pyo.value(m.d[p, t])):>6.1f} | "
+                f"{clean(pyo.value(m.d_ind[p, t])):>6.1f} | "
+                f"{clean(pyo.value(m.d_dep[p, t])):>6.1f} | "
+                f"{clean(tot_dem):>6.1f} | "
                 f"{clean(pyo.value(m.r_make[p, t])):>7.1f} | "
                 f"{clean(pyo.value(m.r_buy[p, t])):>6.1f} | "
-                f"{clean(pyo.value(m.x[p, t])):>7.1f} | "
+                f"{clean(pyo.value(m.x[p, t])):>9.1f} | "
                 f"{clean(pyo.value(m.I[p, t])):>6.1f} | "
                 f"{clean(pyo.value(m.B[p, t])):>10.1f}"
             )
@@ -117,10 +120,23 @@ def print_plan_pivot(m: pyo.ConcreteModel):
             print(f"{t:>8}", end="")
         print()
 
-        # Demand
+        # Independent demand
         print("demand".ljust(14), end="")
         for t in periods:
-            print(f"{clean(pyo.value(m.d[p, t])):>8}", end="")
+            print(f"{clean(pyo.value(m.d_ind[p, t])):>8}", end="")
+        print()
+
+        # Dependent demand
+        print("dep demand".ljust(14), end="")
+        for t in periods:
+            print(f"{clean(pyo.value(m.d_dep[p, t])):>8}", end="")
+        print()
+
+        # Total demand (ind + dep)
+        print("total demand".ljust(14), end="")
+        for t in periods:
+            tot_dem = pyo.value(m.d_ind[p, t]) + pyo.value(m.d_dep[p, t])
+            print(f"{clean(tot_dem):>8}", end="")
         print()
 
         # MAKE release
@@ -136,7 +152,7 @@ def print_plan_pivot(m: pyo.ConcreteModel):
         print()
 
         # Total receipts (after lead time)
-        print("receipt".ljust(14), end="")
+        print("total receipts".ljust(14), end="")
         for t in periods:
             print(f"{clean(pyo.value(m.x[p, t])):>8}", end="")
         print()

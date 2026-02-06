@@ -60,7 +60,7 @@ def build_mrp_model(data: MRPData) -> pyo.ConcreteModel:
     # -----------------
     # Parameters
     # -----------------
-    m.d = pyo.Param(
+    m.d_ind = pyo.Param(
         m.P, m.T,
         initialize=lambda _, p, t: float(data.demand.get(p, {}).get(t, 0.0)),
         default=0.0
@@ -199,6 +199,11 @@ def build_mrp_model(data: MRPData) -> pyo.ConcreteModel:
     )
 
     # Inventory balance (with initial inventory as starting stock)
+    def dep_demand_expr(mm, p, t):
+        return sum(mm.bom[parent, p] * mm.r_make[parent, t] for parent in mm.P)
+
+    m.d_dep = pyo.Expression(m.P, m.T, rule=dep_demand_expr)
+
     def balance_rule(mm, p, t):
         idx = mm.T_index[t]
 
@@ -208,9 +213,7 @@ def build_mrp_model(data: MRPData) -> pyo.ConcreteModel:
             pt = mm.T_list[idx - 1]
             prev_net = mm.I[p, pt] - mm.B[p, pt]
 
-        consumption = sum(mm.bom[parent, p] * mm.r_make[parent, t] for parent in mm.P)
-
-        return (mm.I[p, t] - mm.B[p, t]) == prev_net + mm.x[p, t] - mm.d[p, t] - consumption
+        return (mm.I[p, t] - mm.B[p, t]) == prev_net + mm.x[p, t] - mm.d_ind[p, t] - mm.d_dep[p, t]
 
     m.Balance = pyo.Constraint(m.P, m.T, rule=balance_rule)
 
