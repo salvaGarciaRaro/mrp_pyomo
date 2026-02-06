@@ -13,12 +13,13 @@ class MRPData:
     products: List[str]
     periods: List[str]
     locations: List[str]
+    resources: List[str]
 
     # Independent demand by location
     demand: Dict[str, Dict[str, Dict[str, float]]]
     initial_inventory: Dict[str, Dict[str, float]]
 
-    # MAKE capacity (production)
+    # Capacity by resource/location/period
     capacity: Dict[str, Dict[str, Dict[str, float]]]
 
     # BUY capacity (optional, can be empty -> unlimited)
@@ -26,6 +27,9 @@ class MRPData:
 
     # BOM by location: parent -> location -> component -> qty
     bom: Dict[str, Dict[str, Dict[str, float]]]
+
+    # Routing: product -> location -> resource -> units per unit produced
+    routing: Dict[str, Dict[str, Dict[str, float]]]
 
     # Procurement type by location: "P"=make, "F"=buy, "X"=both
     proc_type: Dict[str, Dict[str, str]]
@@ -61,6 +65,7 @@ def build_mrp_model(data: MRPData) -> pyo.ConcreteModel:
     m.P = pyo.Set(initialize=data.products)
     m.T = pyo.Set(initialize=data.periods, ordered=True)
     m.L = pyo.Set(initialize=data.locations)
+    m.R = pyo.Set(initialize=data.resources)
 
     m.T_list = list(data.periods)
     m.T_index = {t: i for i, t in enumerate(m.T_list)}
@@ -74,9 +79,9 @@ def build_mrp_model(data: MRPData) -> pyo.ConcreteModel:
         default=0.0
     )
 
-    m.cap_make = pyo.Param(
-        m.P, m.L, m.T,
-        initialize=lambda _, p, l, t: float(data.capacity.get(p, {}).get(l, {}).get(t, 0.0)),
+    m.cap_res = pyo.Param(
+        m.R, m.L, m.T,
+        initialize=lambda _, r, l, t: float(data.capacity.get(r, {}).get(l, {}).get(t, 0.0)),
         default=0.0
     )
 
@@ -93,6 +98,12 @@ def build_mrp_model(data: MRPData) -> pyo.ConcreteModel:
     m.bom = pyo.Param(
         m.P, m.L, m.P,
         initialize=lambda _, parent, l, comp: float(data.bom.get(parent, {}).get(l, {}).get(comp, 0.0)),
+        default=0.0
+    )
+
+    m.routing = pyo.Param(
+        m.P, m.L, m.R,
+        initialize=lambda _, p, l, r: float(data.routing.get(p, {}).get(l, {}).get(r, 0.0)),
         default=0.0
     )
 
@@ -186,10 +197,11 @@ def build_mrp_model(data: MRPData) -> pyo.ConcreteModel:
         m.P, m.L, m.T, rule=lambda mm, p, l, t: mm.k_buy[p, l, t] <= BIG_M * mm.buy_allowed[p, l]
     )
 
-    # Capacity
-    m.MakeCap = pyo.Constraint(
-        m.P, m.L, m.T, rule=lambda mm, p, l, t: mm.r_make[p, l, t] <= mm.cap_make[p, l, t]
-    )
+    # Capacity by resource (make only)
+    def make_capacity_rule(mm, r, l, t):
+        return sum(mm.r_make[p, l, t] * mm.routing[p, l, r] for p in mm.P) <= mm.cap_res[r, l, t]
+
+    m.MakeCap = pyo.Constraint(m.R, m.L, m.T, rule=make_capacity_rule)
     m.BuyCap = pyo.Constraint(
         m.P, m.L, m.T, rule=lambda mm, p, l, t: mm.r_buy[p, l, t] <= mm.cap_buy[p, l, t]
     )

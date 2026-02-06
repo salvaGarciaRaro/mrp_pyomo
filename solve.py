@@ -1,6 +1,7 @@
 import argparse
 import json
 import os
+from datetime import datetime
 from typing import Dict, Any, Iterable
 
 import pandas as pd
@@ -21,6 +22,15 @@ def build_mrpdata(raw: Dict[str, Any]) -> MRPData:
         if isinstance(sample, dict) and any(k in periods for k in sample.keys()):
             # old format: product -> period -> value
             return {p: {locations[0]: v} for p, v in m.items()}
+        return m
+
+    def wrap_resource_period_map(m):
+        if not m:
+            return {}
+        sample = next(iter(m.values()))
+        if isinstance(sample, dict) and any(k in periods for k in sample.keys()):
+            # old format: resource -> period -> value
+            return {r: {locations[0]: v} for r, v in m.items()}
         return m
 
     def wrap_product_scalar_map(m):
@@ -68,12 +78,14 @@ def build_mrpdata(raw: Dict[str, Any]) -> MRPData:
         products=raw["products"],
         periods=periods,
         locations=locations,
+        resources=raw.get("resources", []),
 
         demand=wrap_product_period_map(raw.get("demand", {})),
         initial_inventory=wrap_product_scalar_map(raw.get("initial_inventory", {})),
-        capacity=wrap_product_period_map(raw.get("capacity", {})),
+        capacity=wrap_resource_period_map(raw.get("capacity", {})),
         cap_buy=wrap_product_period_map(raw.get("cap_buy", {})),
         bom=wrap_bom_map(raw.get("bom", {})),
+        routing=raw.get("routing", {}),
 
         proc_type=wrap_product_location_proc_map(raw.get("proc_type", {})),
 
@@ -121,6 +133,8 @@ def read_excel_to_raw(path: str) -> Dict[str, Any]:
     raw["products"] = read_list("products", "product")
     raw["periods"] = read_list("periods", "period")
     raw["locations"] = read_list("locations", "location")
+    if "resources" in xls.sheet_names:
+        raw["resources"] = read_list("resources", "resource")
 
     if "demand" in xls.sheet_names:
         df = pd.read_excel(xls, sheet_name="demand")
@@ -132,7 +146,7 @@ def read_excel_to_raw(path: str) -> Dict[str, Any]:
 
     if "capacity" in xls.sheet_names:
         df = pd.read_excel(xls, sheet_name="capacity")
-        raw["capacity"] = _df_to_dict(df, ["product", "location", "period"])
+        raw["capacity"] = _df_to_dict(df, ["resource", "location", "period"])
 
     if "cap_buy" in xls.sheet_names:
         df = pd.read_excel(xls, sheet_name="cap_buy")
@@ -141,6 +155,10 @@ def read_excel_to_raw(path: str) -> Dict[str, Any]:
     if "bom" in xls.sheet_names:
         df = pd.read_excel(xls, sheet_name="bom").rename(columns={"component": "comp"})
         raw["bom"] = _df_to_dict(df, ["parent", "location", "comp"])
+
+    if "routing" in xls.sheet_names:
+        df = pd.read_excel(xls, sheet_name="routing")
+        raw["routing"] = _df_to_dict(df, ["product", "location", "resource"])
 
     if "proc_type" in xls.sheet_names:
         df = pd.read_excel(xls, sheet_name="proc_type")
@@ -426,6 +444,11 @@ if __name__ == "__main__":
         data = build_mrpdata(raw)
     except FileNotFoundError:
         data = load_data(args.json_input)
+
+    # If output is default, add timestamp to avoid overwrite
+    if args.excel_output == "mrp_result.xlsx":
+        ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+        args.excel_output = f"mrp_result_{ts}.xlsx"
 
     model = build_mrp_model(data)
     metrics = solve_three_phase(model)
