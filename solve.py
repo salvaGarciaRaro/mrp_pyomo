@@ -82,12 +82,14 @@ def _apply_purchasing_rows(raw: Dict[str, Any]) -> Dict[str, Any]:
     lt_buy = raw.get("lt_buy", {})
     min_lot_buy = raw.get("min_lot_buy", {})
     mult_lot_buy = raw.get("multiple_lot_buy", {})
+    buy_defined: Dict[str, Dict[str, bool]] = raw.get("buy_defined", {})
 
     for row in raw.get("purchasing_rows", []):
         prod = str(row.get("product", "")).strip()
         loc = str(row.get("location", "")).strip()
         if not prod or not loc:
             continue
+        buy_defined.setdefault(prod, {})[loc] = True
         if row.get("leadtime") is not None:
             lt_buy.setdefault(prod, {})[loc] = int(row["leadtime"])
         if row.get("min_lotsize") is not None:
@@ -101,6 +103,8 @@ def _apply_purchasing_rows(raw: Dict[str, Any]) -> Dict[str, Any]:
         raw["min_lot_buy"] = min_lot_buy
     if mult_lot_buy:
         raw["multiple_lot_buy"] = mult_lot_buy
+    if buy_defined:
+        raw["buy_defined"] = buy_defined
     return raw
 
 
@@ -161,6 +165,14 @@ def build_mrpdata(raw: Dict[str, Any]) -> MRPData:
             return {p: {locations[0]: float(v)} for p, v in m.items()}
         return m
 
+    def wrap_product_location_bool_map(m):
+        if not m:
+            return {}
+        sample = next(iter(m.values()))
+        if isinstance(sample, bool):
+            return {p: {locations[0]: bool(v)} for p, v in m.items()}
+        return m
+
     def wrap_bom_map(m):
         if not m:
             return {}
@@ -192,6 +204,7 @@ def build_mrpdata(raw: Dict[str, Any]) -> MRPData:
         multiple_lot_make=wrap_product_location_int_map(raw.get("multiple_lot_make", {}), 1),
         min_lot_buy=wrap_product_location_float_map(raw.get("min_lot_buy", {})),
         multiple_lot_buy=wrap_product_location_int_map(raw.get("multiple_lot_buy", {}), 1),
+        buy_defined=wrap_product_location_bool_map(raw.get("buy_defined", {})),
 
         ship_allowed=raw.get("ship_allowed", {}),
         ship_priority=raw.get("ship_priority", {}),
@@ -338,13 +351,13 @@ def write_output_excel(path: str, m: pyo.ConcreteModel):
                 ]
 
                 data = [
-                    ("demand", row_values([pyo.value(m.d_ind[p, l, t]) for t in m.T])),
+                    ("independent demand", row_values([pyo.value(m.d_ind[p, l, t]) for t in m.T])),
                     ("dep demand", row_values([pyo.value(m.d_dep[p, l, t]) for t in m.T])),
-                    ("ship out", row_values(ship_out)),
+                    ("distribution req", row_values(ship_out)),
                     ("total demand", row_values(tot_dem)),
-                    ("make rel", row_values([pyo.value(m.r_make[p, l, t]) for t in m.T])),
-                    ("buy rel", row_values([pyo.value(m.r_buy[p, l, t]) for t in m.T])),
-                    ("ship in", row_values(ship_in)),
+                    ("production receipts", row_values([pyo.value(m.r_make[p, l, t]) for t in m.T])),
+                    ("procurement receipts", row_values([pyo.value(m.r_buy[p, l, t]) for t in m.T])),
+                    ("distribution rec", row_values(ship_in)),
                     ("total receipts", row_values(tot_rcpt)),
                     ("SOH", row_values([pyo.value(m.I[p, l, t]) for t in m.T])),
                 ]
@@ -422,23 +435,9 @@ def solve_three_phase(m: pyo.ConcreteModel, solver_name: str = "highs"):
 
     best_backlog = pyo.value(sum(m.B[p, l, t] for p in m.P for l in m.L for t in m.T))
 
-    # Phase B: minimize inventory
+    # Phase B: minimize BUY (prefer transfer over buy when make not possible)
     m.KeepBacklog = pyo.Constraint(
         expr=sum(m.B[p, l, t] for p in m.P for l in m.L for t in m.T) <= best_backlog + 1e-6
-    )
-
-    m.del_component(m.Obj)
-    m.Obj = pyo.Objective(
-        expr=sum(m.I[p, l, t] for p in m.P for l in m.L for t in m.T),
-        sense=pyo.minimize
-    )
-    solver.solve(m)
-
-    best_inventory = pyo.value(sum(m.I[p, l, t] for p in m.P for l in m.L for t in m.T))
-
-    # Phase C: minimize BUY (MAKE preferred)
-    m.KeepInventory = pyo.Constraint(
-        expr=sum(m.I[p, l, t] for p in m.P for l in m.L for t in m.T) <= best_inventory + 1e-6
     )
 
     m.del_component(m.Obj)
@@ -450,9 +449,23 @@ def solve_three_phase(m: pyo.ConcreteModel, solver_name: str = "highs"):
 
     best_buy = pyo.value(sum(m.r_buy[p, l, t] for p in m.P for l in m.L for t in m.T))
 
-    # Phase D: minimize transfer priority (lower priority value preferred)
+    # Phase C: minimize inventory (given best backlog + buy)
     m.KeepBuy = pyo.Constraint(
         expr=sum(m.r_buy[p, l, t] for p in m.P for l in m.L for t in m.T) <= best_buy + 1e-6
+    )
+
+    m.del_component(m.Obj)
+    m.Obj = pyo.Objective(
+        expr=sum(m.I[p, l, t] for p in m.P for l in m.L for t in m.T),
+        sense=pyo.minimize
+    )
+    solver.solve(m)
+
+    best_inventory = pyo.value(sum(m.I[p, l, t] for p in m.P for l in m.L for t in m.T))
+
+    # Phase D: minimize transfer priority (lower priority value preferred)
+    m.KeepInventory = pyo.Constraint(
+        expr=sum(m.I[p, l, t] for p in m.P for l in m.L for t in m.T) <= best_inventory + 1e-6
     )
 
     def ship_priority_weight(mm, p, lf, lt, t):
@@ -515,27 +528,27 @@ def print_plan_pivot(m: pyo.ConcreteModel):
                 print(f"{t:>8}", end="")
             print()
 
-            # 1. demand
-            print("demand".ljust(14), end="")
+            # 1. independent demand
+            print("independent demand".ljust(18), end="")
             for t in periods:
                 print(f"{clean(pyo.value(m.d_ind[p, l, t])):>8}", end="")
             print()
 
             # 2. dep demand
-            print("dep demand".ljust(14), end="")
+            print("dep demand".ljust(18), end="")
             for t in periods:
                 print(f"{clean(pyo.value(m.d_dep[p, l, t])):>8}", end="")
             print()
 
             # 3. ship out
-            print("ship out".ljust(14), end="")
+            print("distribution req".ljust(18), end="")
             for t in periods:
                 ship_out = sum(pyo.value(m.ship[p, l, lt, t]) for lt in m.L)
                 print(f"{clean(ship_out):>8}", end="")
             print()
 
             # 4. total demand (ind + dep + ship out)
-            print("total demand".ljust(14), end="")
+            print("total demand".ljust(18), end="")
             for t in periods:
                 ship_out = sum(pyo.value(m.ship[p, l, lt, t]) for lt in m.L)
                 tot_dem = pyo.value(m.d_ind[p, l, t]) + pyo.value(m.d_dep[p, l, t]) + ship_out
@@ -543,33 +556,33 @@ def print_plan_pivot(m: pyo.ConcreteModel):
             print()
 
             # 5. make rel
-            print("make rel".ljust(14), end="")
+            print("production receipts".ljust(18), end="")
             for t in periods:
                 print(f"{clean(pyo.value(m.r_make[p, l, t])):>8}", end="")
             print()
 
             # 6. buy rel
-            print("buy rel".ljust(14), end="")
+            print("procurement receipts".ljust(18), end="")
             for t in periods:
                 print(f"{clean(pyo.value(m.r_buy[p, l, t])):>8}", end="")
             print()
 
             # 7. ship in
-            print("ship in".ljust(14), end="")
+            print("distribution rec".ljust(18), end="")
             for t in periods:
                 ship_in = sum(pyo.value(m.ship_receipt[p, lf, l, t]) for lf in m.L)
                 print(f"{clean(ship_in):>8}", end="")
             print()
 
             # 8. total receipts (after lead time + ship in)
-            print("total receipts".ljust(14), end="")
+            print("total receipts".ljust(18), end="")
             for t in periods:
                 tot_rcpt = pyo.value(m.x[p, l, t]) + sum(pyo.value(m.ship_receipt[p, lf, l, t]) for lf in m.L)
                 print(f"{clean(tot_rcpt):>8}", end="")
             print()
 
             # 9. SOH
-            print("SOH".ljust(14), end="")
+            print("SOH".ljust(18), end="")
             for t in periods:
                 print(f"{clean(pyo.value(m.I[p, l, t])):>8}", end="")
             print()

@@ -43,6 +43,7 @@ class MRPData:
     multiple_lot_make: Dict[str, Dict[str, int]]
     min_lot_buy: Dict[str, Dict[str, float]]
     multiple_lot_buy: Dict[str, Dict[str, int]]
+    buy_defined: Dict[str, Dict[str, bool]]
 
     # Transfers (by lane)
     ship_allowed: Dict[str, Dict[str, Dict[str, bool]]]
@@ -111,10 +112,17 @@ def build_mrp_model(data: MRPData) -> pyo.ConcreteModel:
         return 1 if data.proc_type.get(p, {}).get(l, "X") in ("P", "X") else 0
 
     def buy_allowed_init(_, p, l):
+        return 1 if (
+            data.proc_type.get(p, {}).get(l, "X") in ("F", "X")
+            and data.buy_defined.get(p, {}).get(l, False)
+        ) else 0
+
+    def transfer_allowed_init(_, p, l):
         return 1 if data.proc_type.get(p, {}).get(l, "X") in ("F", "X") else 0
 
     m.make_allowed = pyo.Param(m.P, m.L, initialize=make_allowed_init)
     m.buy_allowed = pyo.Param(m.P, m.L, initialize=buy_allowed_init)
+    m.transfer_allowed = pyo.Param(m.P, m.L, initialize=transfer_allowed_init)
 
     m.lt_make = pyo.Param(
         m.P, m.L, initialize=lambda _, p, l: int(data.lt_make.get(p, {}).get(l, 0)), default=0
@@ -249,6 +257,14 @@ def build_mrp_model(data: MRPData) -> pyo.ConcreteModel:
     # Disallow non-allowed lanes
     m.ShipAllowed = pyo.Constraint(
         m.P, m.L, m.L, m.T, rule=lambda mm, p, lf, lt, t: mm.ship[p, lf, lt, t] <= BIG_M * mm.ship_allowed[p, lf, lt]
+    )
+
+    # Transfer allowed only if procurement type allows it at both ends (F or X)
+    m.TransferAllowedFrom = pyo.Constraint(
+        m.P, m.L, m.L, m.T, rule=lambda mm, p, lf, lt, t: mm.ship[p, lf, lt, t] <= BIG_M * mm.transfer_allowed[p, lf]
+    )
+    m.TransferAllowedTo = pyo.Constraint(
+        m.P, m.L, m.L, m.T, rule=lambda mm, p, lf, lt, t: mm.ship[p, lf, lt, t] <= BIG_M * mm.transfer_allowed[p, lt]
     )
 
     # Capacity per lane/time
