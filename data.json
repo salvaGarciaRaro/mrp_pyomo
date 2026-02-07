@@ -1,17 +1,29 @@
 {
   "products": [
     "FG1",
+    "FG2",
+    "FG3",
+    "FG4",
+    "FG5",
+    "FG6",
+    "FG7",
+    "FG8",
+    "FG9",
+    "FG10",
     "C1",
     "C2",
-    "RM1",
-    "RM2"
+    "C3",
+    "C4",
+    "C5",
+    "C6",
+    "C7",
+    "C8"
   ],
   "periods": [
     "P1",
     "P2",
     "P3",
-    "P4",
-    "P5"
+    "P4"
   ],
   "locations": [
     "L1",
@@ -19,13 +31,68 @@
   ],
   "resources": [
     "RES1",
-    "RES2"
+    "RES2",
+    "RES3"
   ],
   "demand": {
     "FG1": {
       "L1": {
+        "P2": 2,
+        "P3": 1
+      }
+    },
+    "FG2": {
+      "L1": {
+        "P2": 4,
+        "P3": 2
+      }
+    },
+    "FG3": {
+      "L1": {
+        "P2": 6,
+        "P3": 3
+      }
+    },
+    "FG4": {
+      "L1": {
+        "P2": 8,
+        "P3": 4
+      }
+    },
+    "FG5": {
+      "L1": {
         "P2": 10,
         "P3": 5
+      }
+    },
+    "FG6": {
+      "L1": {
+        "P2": 12,
+        "P3": 6
+      }
+    },
+    "FG7": {
+      "L1": {
+        "P2": 14,
+        "P3": 7
+      }
+    },
+    "FG8": {
+      "L1": {
+        "P2": 16,
+        "P3": 8
+      }
+    },
+    "FG9": {
+      "L1": {
+        "P2": 18,
+        "P3": 9
+      }
+    },
+    "FG10": {
+      "L1": {
+        "P2": 20,
+        "P3": 10
       }
     }
   },
@@ -34,6 +101,42 @@
       "L1": 0,
       "L2": 0
     },
+    "FG2": {
+      "L1": 0,
+      "L2": 0
+    },
+    "FG3": {
+      "L1": 0,
+      "L2": 0
+    },
+    "FG4": {
+      "L1": 0,
+      "L2": 0
+    },
+    "FG5": {
+      "L1": 0,
+      "L2": 0
+    },
+    "FG6": {
+      "L1": 0,
+      "L2": 0
+    },
+    "FG7": {
+      "L1": 0,
+      "L2": 0
+    },
+    "FG8": {
+      "L1": 0,
+      "L2": 0
+    },
+    "FG9": {
+      "L1": 0,
+      "L2": 0
+    },
+    "FG10": {
+      "L1": 0,
+      "L2": 0
+    },
     "C1": {
       "L1": 0,
       "L2": 0
@@ -42,141 +145,871 @@
       "L1": 0,
       "L2": 0
     },
-    "RM1": {
+    "C3": {
       "L1": 0,
       "L2": 0
     },
-    "RM2": {
+    "C4": {
       "L1": 0,
-      "L2": 220
+      "L2": 0
+    },
+    "C5": {
+      "L1": 0,
+      "L2": 0
+    },
+    "C6": {
+      "L1": 0,
+      "L2": 0
+    },
+    "C7": {
+      "L1": 0,
+      "L2": 0
+    },
+    "C8": {
+      "L1": 0,
+      "L2": 0
     }
   },
   "capacity": {
     "RES1": {
       "L1": {
-        "P1": 999,
-        "P2": 0,
-        "P3": 999,
-        "P4": 999,
-        "P5": 999
+        "P1": 1000000000,
+        "P2": 1000000000,
+        "P3": 1000000000,
+        "P4": 1000000000
       },
       "L2": {
-        "P1": 999,
-        "P2": 999,
-        "P3": 999,
-        "P4": 999,
-        "P5": 999
+        "P1": 1000000000,
+        "P2": 1000000000,
+        "P3": 1000000000,
+        "P4": 1000000000
       }
     },
     "RES2": {
       "L1": {
-        "P1": 999,
-        "P2": 999,
-        "P3": 999,
-        "P4": 999,
-        "P5": 999
+        "P1": 1000000000,
+        "P2": 1000000000,
+        "P3": 1000000000,
+        "P4": 1000000000
       },
       "L2": {
-        "P1": 999,
-        "P2": 999,
-        "P3": 999,
-        "P4": 999,
-        "P5": 999
+        "P1": 1000000000,
+        "P2": 1000000000,
+        "P3": 1000000000,
+        "P4": 1000000000
+      }
+    },
+    "RES3": {
+      "L1": {
+        "P1": 1000000000,
+        "P2": 1000000000,
+        "P3": 1000000000,
+        "P4": 1000000000
+      },
+      "L2": {
+        "P1": 1000000000,
+        "P2": 1000000000,
+        "P3": 1000000000,
+        "P4": 1000000000
       }
     }
   },
   "cap_buy": {
     "FG1": {
       "L1": {
-        "P1": 999,
-        "P2": 999,
-        "P3": 999,
-        "P4": 999
+        "P1": 1000000000,
+        "P2": 1000000000,
+        "P3": 1000000000,
+        "P4": 1000000000
       },
       "L2": {
-        "P1": 999,
-        "P2": 999,
-        "P3": 999,
-        "P4": 999
+        "P1": 1000000000,
+        "P2": 1000000000,
+        "P3": 1000000000,
+        "P4": 1000000000
       }
     },
-    "RM1": {
+    "FG2": {
       "L1": {
-        "P1": 999,
-        "P2": 999,
-        "P3": 999,
-        "P4": 999
+        "P1": 1000000000,
+        "P2": 1000000000,
+        "P3": 1000000000,
+        "P4": 1000000000
       },
       "L2": {
-        "P1": 999,
-        "P2": 999,
-        "P3": 999,
-        "P4": 999
+        "P1": 1000000000,
+        "P2": 1000000000,
+        "P3": 1000000000,
+        "P4": 1000000000
       }
     },
-    "RM2": {
+    "FG3": {
       "L1": {
-        "P1": 999,
-        "P2": 999,
-        "P3": 999,
-        "P4": 999
+        "P1": 1000000000,
+        "P2": 1000000000,
+        "P3": 1000000000,
+        "P4": 1000000000
       },
       "L2": {
-        "P1": 999,
-        "P2": 999,
-        "P3": 999,
-        "P4": 999
+        "P1": 1000000000,
+        "P2": 1000000000,
+        "P3": 1000000000,
+        "P4": 1000000000
       }
-    }
-  },
-  "bom": {
-    "FG1": {
+    },
+    "FG4": {
       "L1": {
-        "C1": 2,
-        "C2": 1
+        "P1": 1000000000,
+        "P2": 1000000000,
+        "P3": 1000000000,
+        "P4": 1000000000
       },
       "L2": {
-        "C1": 2,
-        "C2": 1
+        "P1": 1000000000,
+        "P2": 1000000000,
+        "P3": 1000000000,
+        "P4": 1000000000
+      }
+    },
+    "FG5": {
+      "L1": {
+        "P1": 1000000000,
+        "P2": 1000000000,
+        "P3": 1000000000,
+        "P4": 1000000000
+      },
+      "L2": {
+        "P1": 1000000000,
+        "P2": 1000000000,
+        "P3": 1000000000,
+        "P4": 1000000000
+      }
+    },
+    "FG6": {
+      "L1": {
+        "P1": 1000000000,
+        "P2": 1000000000,
+        "P3": 1000000000,
+        "P4": 1000000000
+      },
+      "L2": {
+        "P1": 1000000000,
+        "P2": 1000000000,
+        "P3": 1000000000,
+        "P4": 1000000000
+      }
+    },
+    "FG7": {
+      "L1": {
+        "P1": 1000000000,
+        "P2": 1000000000,
+        "P3": 1000000000,
+        "P4": 1000000000
+      },
+      "L2": {
+        "P1": 1000000000,
+        "P2": 1000000000,
+        "P3": 1000000000,
+        "P4": 1000000000
+      }
+    },
+    "FG8": {
+      "L1": {
+        "P1": 1000000000,
+        "P2": 1000000000,
+        "P3": 1000000000,
+        "P4": 1000000000
+      },
+      "L2": {
+        "P1": 1000000000,
+        "P2": 1000000000,
+        "P3": 1000000000,
+        "P4": 1000000000
+      }
+    },
+    "FG9": {
+      "L1": {
+        "P1": 1000000000,
+        "P2": 1000000000,
+        "P3": 1000000000,
+        "P4": 1000000000
+      },
+      "L2": {
+        "P1": 1000000000,
+        "P2": 1000000000,
+        "P3": 1000000000,
+        "P4": 1000000000
+      }
+    },
+    "FG10": {
+      "L1": {
+        "P1": 1000000000,
+        "P2": 1000000000,
+        "P3": 1000000000,
+        "P4": 1000000000
+      },
+      "L2": {
+        "P1": 1000000000,
+        "P2": 1000000000,
+        "P3": 1000000000,
+        "P4": 1000000000
       }
     },
     "C1": {
       "L1": {
-        "RM1": 3
+        "P1": 1000000000,
+        "P2": 1000000000,
+        "P3": 1000000000,
+        "P4": 1000000000
       },
       "L2": {
-        "RM1": 3
+        "P1": 1000000000,
+        "P2": 1000000000,
+        "P3": 1000000000,
+        "P4": 1000000000
       }
     },
     "C2": {
       "L1": {
-        "RM2": 2
+        "P1": 1000000000,
+        "P2": 1000000000,
+        "P3": 1000000000,
+        "P4": 1000000000
       },
       "L2": {
-        "RM2": 2
+        "P1": 1000000000,
+        "P2": 1000000000,
+        "P3": 1000000000,
+        "P4": 1000000000
+      }
+    },
+    "C3": {
+      "L1": {
+        "P1": 1000000000,
+        "P2": 1000000000,
+        "P3": 1000000000,
+        "P4": 1000000000
+      },
+      "L2": {
+        "P1": 1000000000,
+        "P2": 1000000000,
+        "P3": 1000000000,
+        "P4": 1000000000
+      }
+    },
+    "C4": {
+      "L1": {
+        "P1": 1000000000,
+        "P2": 1000000000,
+        "P3": 1000000000,
+        "P4": 1000000000
+      },
+      "L2": {
+        "P1": 1000000000,
+        "P2": 1000000000,
+        "P3": 1000000000,
+        "P4": 1000000000
+      }
+    },
+    "C5": {
+      "L1": {
+        "P1": 1000000000,
+        "P2": 1000000000,
+        "P3": 1000000000,
+        "P4": 1000000000
+      },
+      "L2": {
+        "P1": 1000000000,
+        "P2": 1000000000,
+        "P3": 1000000000,
+        "P4": 1000000000
+      }
+    },
+    "C6": {
+      "L1": {
+        "P1": 1000000000,
+        "P2": 1000000000,
+        "P3": 1000000000,
+        "P4": 1000000000
+      },
+      "L2": {
+        "P1": 1000000000,
+        "P2": 1000000000,
+        "P3": 1000000000,
+        "P4": 1000000000
+      }
+    },
+    "C7": {
+      "L1": {
+        "P1": 1000000000,
+        "P2": 1000000000,
+        "P3": 1000000000,
+        "P4": 1000000000
+      },
+      "L2": {
+        "P1": 1000000000,
+        "P2": 1000000000,
+        "P3": 1000000000,
+        "P4": 1000000000
+      }
+    },
+    "C8": {
+      "L1": {
+        "P1": 1000000000,
+        "P2": 1000000000,
+        "P3": 1000000000,
+        "P4": 1000000000
+      },
+      "L2": {
+        "P1": 1000000000,
+        "P2": 1000000000,
+        "P3": 1000000000,
+        "P4": 1000000000
       }
     }
   },
+  "bom_rows": [
+    {
+      "parent": "FG1",
+      "location": "L1",
+      "component": "C1",
+      "value": 2,
+      "lt_make": 0,
+      "min_lot_make": 0,
+      "multiple_lot_make": 1
+    },
+    {
+      "parent": "FG1",
+      "location": "L1",
+      "component": "C2",
+      "value": 1,
+      "lt_make": 0,
+      "min_lot_make": 0,
+      "multiple_lot_make": 1
+    },
+    {
+      "parent": "FG1",
+      "location": "L1",
+      "component": "C3",
+      "value": 1,
+      "lt_make": 0,
+      "min_lot_make": 0,
+      "multiple_lot_make": 1
+    },
+    {
+      "parent": "FG1",
+      "location": "L2",
+      "component": "C1",
+      "value": 2,
+      "lt_make": 0,
+      "min_lot_make": 0,
+      "multiple_lot_make": 1
+    },
+    {
+      "parent": "FG1",
+      "location": "L2",
+      "component": "C2",
+      "value": 1,
+      "lt_make": 0,
+      "min_lot_make": 0,
+      "multiple_lot_make": 1
+    },
+    {
+      "parent": "FG1",
+      "location": "L2",
+      "component": "C3",
+      "value": 1,
+      "lt_make": 0,
+      "min_lot_make": 0,
+      "multiple_lot_make": 1
+    },
+    {
+      "parent": "FG2",
+      "location": "L1",
+      "component": "C1",
+      "value": 1,
+      "lt_make": 0,
+      "min_lot_make": 0,
+      "multiple_lot_make": 1
+    },
+    {
+      "parent": "FG2",
+      "location": "L1",
+      "component": "C4",
+      "value": 2,
+      "lt_make": 0,
+      "min_lot_make": 0,
+      "multiple_lot_make": 1
+    },
+    {
+      "parent": "FG2",
+      "location": "L2",
+      "component": "C1",
+      "value": 1,
+      "lt_make": 0,
+      "min_lot_make": 0,
+      "multiple_lot_make": 1
+    },
+    {
+      "parent": "FG2",
+      "location": "L2",
+      "component": "C4",
+      "value": 2,
+      "lt_make": 0,
+      "min_lot_make": 0,
+      "multiple_lot_make": 1
+    },
+    {
+      "parent": "FG3",
+      "location": "L1",
+      "component": "C2",
+      "value": 1,
+      "lt_make": 0,
+      "min_lot_make": 0,
+      "multiple_lot_make": 1
+    },
+    {
+      "parent": "FG3",
+      "location": "L1",
+      "component": "C5",
+      "value": 1,
+      "lt_make": 0,
+      "min_lot_make": 0,
+      "multiple_lot_make": 1
+    },
+    {
+      "parent": "FG3",
+      "location": "L2",
+      "component": "C2",
+      "value": 1,
+      "lt_make": 0,
+      "min_lot_make": 0,
+      "multiple_lot_make": 1
+    },
+    {
+      "parent": "FG3",
+      "location": "L2",
+      "component": "C5",
+      "value": 1,
+      "lt_make": 0,
+      "min_lot_make": 0,
+      "multiple_lot_make": 1
+    },
+    {
+      "parent": "FG4",
+      "location": "L1",
+      "component": "C3",
+      "value": 2,
+      "lt_make": 0,
+      "min_lot_make": 0,
+      "multiple_lot_make": 1
+    },
+    {
+      "parent": "FG4",
+      "location": "L1",
+      "component": "C6",
+      "value": 1,
+      "lt_make": 0,
+      "min_lot_make": 0,
+      "multiple_lot_make": 1
+    },
+    {
+      "parent": "FG4",
+      "location": "L2",
+      "component": "C3",
+      "value": 2,
+      "lt_make": 0,
+      "min_lot_make": 0,
+      "multiple_lot_make": 1
+    },
+    {
+      "parent": "FG4",
+      "location": "L2",
+      "component": "C6",
+      "value": 1,
+      "lt_make": 0,
+      "min_lot_make": 0,
+      "multiple_lot_make": 1
+    },
+    {
+      "parent": "FG5",
+      "location": "L1",
+      "component": "C4",
+      "value": 1,
+      "lt_make": 0,
+      "min_lot_make": 0,
+      "multiple_lot_make": 1
+    },
+    {
+      "parent": "FG5",
+      "location": "L1",
+      "component": "C5",
+      "value": 2,
+      "lt_make": 0,
+      "min_lot_make": 0,
+      "multiple_lot_make": 1
+    },
+    {
+      "parent": "FG5",
+      "location": "L2",
+      "component": "C4",
+      "value": 1,
+      "lt_make": 0,
+      "min_lot_make": 0,
+      "multiple_lot_make": 1
+    },
+    {
+      "parent": "FG5",
+      "location": "L2",
+      "component": "C5",
+      "value": 2,
+      "lt_make": 0,
+      "min_lot_make": 0,
+      "multiple_lot_make": 1
+    },
+    {
+      "parent": "FG6",
+      "location": "L1",
+      "component": "C1",
+      "value": 1,
+      "lt_make": 0,
+      "min_lot_make": 0,
+      "multiple_lot_make": 1
+    },
+    {
+      "parent": "FG6",
+      "location": "L1",
+      "component": "C6",
+      "value": 2,
+      "lt_make": 0,
+      "min_lot_make": 0,
+      "multiple_lot_make": 1
+    },
+    {
+      "parent": "FG6",
+      "location": "L2",
+      "component": "C1",
+      "value": 1,
+      "lt_make": 0,
+      "min_lot_make": 0,
+      "multiple_lot_make": 1
+    },
+    {
+      "parent": "FG6",
+      "location": "L2",
+      "component": "C6",
+      "value": 2,
+      "lt_make": 0,
+      "min_lot_make": 0,
+      "multiple_lot_make": 1
+    },
+    {
+      "parent": "FG7",
+      "location": "L1",
+      "component": "C2",
+      "value": 2,
+      "lt_make": 0,
+      "min_lot_make": 0,
+      "multiple_lot_make": 1
+    },
+    {
+      "parent": "FG7",
+      "location": "L1",
+      "component": "C7",
+      "value": 1,
+      "lt_make": 0,
+      "min_lot_make": 0,
+      "multiple_lot_make": 1
+    },
+    {
+      "parent": "FG7",
+      "location": "L2",
+      "component": "C2",
+      "value": 2,
+      "lt_make": 0,
+      "min_lot_make": 0,
+      "multiple_lot_make": 1
+    },
+    {
+      "parent": "FG7",
+      "location": "L2",
+      "component": "C7",
+      "value": 1,
+      "lt_make": 0,
+      "min_lot_make": 0,
+      "multiple_lot_make": 1
+    },
+    {
+      "parent": "FG8",
+      "location": "L1",
+      "component": "C3",
+      "value": 1,
+      "lt_make": 0,
+      "min_lot_make": 0,
+      "multiple_lot_make": 1
+    },
+    {
+      "parent": "FG8",
+      "location": "L1",
+      "component": "C8",
+      "value": 2,
+      "lt_make": 0,
+      "min_lot_make": 0,
+      "multiple_lot_make": 1
+    },
+    {
+      "parent": "FG8",
+      "location": "L2",
+      "component": "C3",
+      "value": 1,
+      "lt_make": 0,
+      "min_lot_make": 0,
+      "multiple_lot_make": 1
+    },
+    {
+      "parent": "FG8",
+      "location": "L2",
+      "component": "C8",
+      "value": 2,
+      "lt_make": 0,
+      "min_lot_make": 0,
+      "multiple_lot_make": 1
+    },
+    {
+      "parent": "FG9",
+      "location": "L1",
+      "component": "C4",
+      "value": 2,
+      "lt_make": 0,
+      "min_lot_make": 0,
+      "multiple_lot_make": 1
+    },
+    {
+      "parent": "FG9",
+      "location": "L1",
+      "component": "C7",
+      "value": 1,
+      "lt_make": 0,
+      "min_lot_make": 0,
+      "multiple_lot_make": 1
+    },
+    {
+      "parent": "FG9",
+      "location": "L2",
+      "component": "C4",
+      "value": 2,
+      "lt_make": 0,
+      "min_lot_make": 0,
+      "multiple_lot_make": 1
+    },
+    {
+      "parent": "FG9",
+      "location": "L2",
+      "component": "C7",
+      "value": 1,
+      "lt_make": 0,
+      "min_lot_make": 0,
+      "multiple_lot_make": 1
+    },
+    {
+      "parent": "FG10",
+      "location": "L1",
+      "component": "C5",
+      "value": 1,
+      "lt_make": 0,
+      "min_lot_make": 0,
+      "multiple_lot_make": 1
+    },
+    {
+      "parent": "FG10",
+      "location": "L1",
+      "component": "C8",
+      "value": 1,
+      "lt_make": 0,
+      "min_lot_make": 0,
+      "multiple_lot_make": 1
+    },
+    {
+      "parent": "FG10",
+      "location": "L1",
+      "component": "C6",
+      "value": 1,
+      "lt_make": 0,
+      "min_lot_make": 0,
+      "multiple_lot_make": 1
+    },
+    {
+      "parent": "FG10",
+      "location": "L2",
+      "component": "C5",
+      "value": 1,
+      "lt_make": 0,
+      "min_lot_make": 0,
+      "multiple_lot_make": 1
+    },
+    {
+      "parent": "FG10",
+      "location": "L2",
+      "component": "C8",
+      "value": 1,
+      "lt_make": 0,
+      "min_lot_make": 0,
+      "multiple_lot_make": 1
+    },
+    {
+      "parent": "FG10",
+      "location": "L2",
+      "component": "C6",
+      "value": 1,
+      "lt_make": 0,
+      "min_lot_make": 0,
+      "multiple_lot_make": 1
+    }
+  ],
   "routing": {
     "FG1": {
-      "L1": { "RES1": 1 },
-      "L2": { "RES1": 1 }
+      "L1": {
+        "RES1": 1
+      },
+      "L2": {
+        "RES1": 1
+      }
+    },
+    "FG2": {
+      "L1": {
+        "RES1": 1
+      },
+      "L2": {
+        "RES1": 1
+      }
+    },
+    "FG3": {
+      "L1": {
+        "RES1": 1
+      },
+      "L2": {
+        "RES1": 1
+      }
+    },
+    "FG4": {
+      "L1": {
+        "RES1": 1
+      },
+      "L2": {
+        "RES1": 1
+      }
+    },
+    "FG5": {
+      "L1": {
+        "RES2": 1
+      },
+      "L2": {
+        "RES2": 1
+      }
+    },
+    "FG6": {
+      "L1": {
+        "RES2": 1
+      },
+      "L2": {
+        "RES2": 1
+      }
+    },
+    "FG7": {
+      "L1": {
+        "RES2": 1
+      },
+      "L2": {
+        "RES2": 1
+      }
+    },
+    "FG8": {
+      "L1": {
+        "RES3": 1
+      },
+      "L2": {
+        "RES3": 1
+      }
+    },
+    "FG9": {
+      "L1": {
+        "RES3": 1
+      },
+      "L2": {
+        "RES3": 1
+      }
+    },
+    "FG10": {
+      "L1": {
+        "RES3": 1
+      },
+      "L2": {
+        "RES3": 1
+      }
     },
     "C1": {
-      "L1": { "RES1": 1 },
-      "L2": { "RES1": 1 }
+      "L1": {
+        "RES1": 1
+      },
+      "L2": {
+        "RES1": 1
+      }
     },
     "C2": {
-      "L1": { "RES2": 1 },
-      "L2": { "RES2": 1 }
+      "L1": {
+        "RES1": 1
+      },
+      "L2": {
+        "RES1": 1
+      }
     },
-    "RM1": {
-      "L1": { "RES2": 1 },
-      "L2": { "RES2": 1 }
+    "C3": {
+      "L1": {
+        "RES1": 1
+      },
+      "L2": {
+        "RES1": 1
+      }
     },
-    "RM2": {
-      "L1": { "RES2": 1 },
-      "L2": { "RES2": 1 }
+    "C4": {
+      "L1": {
+        "RES2": 1
+      },
+      "L2": {
+        "RES2": 1
+      }
+    },
+    "C5": {
+      "L1": {
+        "RES2": 1
+      },
+      "L2": {
+        "RES2": 1
+      }
+    },
+    "C6": {
+      "L1": {
+        "RES2": 1
+      },
+      "L2": {
+        "RES2": 1
+      }
+    },
+    "C7": {
+      "L1": {
+        "RES3": 1
+      },
+      "L2": {
+        "RES3": 1
+      }
+    },
+    "C8": {
+      "L1": {
+        "RES3": 1
+      },
+      "L2": {
+        "RES3": 1
+      }
     }
   },
   "proc_type": {
@@ -184,6 +1017,42 @@
       "L1": "X",
       "L2": "X"
     },
+    "FG2": {
+      "L1": "X",
+      "L2": "X"
+    },
+    "FG3": {
+      "L1": "X",
+      "L2": "X"
+    },
+    "FG4": {
+      "L1": "X",
+      "L2": "X"
+    },
+    "FG5": {
+      "L1": "X",
+      "L2": "X"
+    },
+    "FG6": {
+      "L1": "X",
+      "L2": "X"
+    },
+    "FG7": {
+      "L1": "X",
+      "L2": "X"
+    },
+    "FG8": {
+      "L1": "X",
+      "L2": "X"
+    },
+    "FG9": {
+      "L1": "X",
+      "L2": "X"
+    },
+    "FG10": {
+      "L1": "X",
+      "L2": "X"
+    },
     "C1": {
       "L1": "X",
       "L2": "X"
@@ -192,276 +1061,897 @@
       "L1": "X",
       "L2": "X"
     },
-    "RM1": {
+    "C3": {
       "L1": "X",
       "L2": "X"
     },
-    "RM2": {
+    "C4": {
+      "L1": "X",
+      "L2": "X"
+    },
+    "C5": {
+      "L1": "X",
+      "L2": "X"
+    },
+    "C6": {
+      "L1": "X",
+      "L2": "X"
+    },
+    "C7": {
+      "L1": "X",
+      "L2": "X"
+    },
+    "C8": {
       "L1": "X",
       "L2": "X"
     }
   },
-  "lt_make": {
-    "FG1": {
-      "L1": 0,
-      "L2": 0
+  "purchasing_rows": [
+    {
+      "product": "FG1",
+      "location": "L1",
+      "leadtime": 0,
+      "min_lotsize": 0,
+      "mult_lotsize": 1
     },
-    "C1": {
-      "L1": 0,
-      "L2": 0
+    {
+      "product": "FG1",
+      "location": "L2",
+      "leadtime": 0,
+      "min_lotsize": 0,
+      "mult_lotsize": 1
     },
-    "C2": {
-      "L1": 0,
-      "L2": 0
+    {
+      "product": "FG2",
+      "location": "L1",
+      "leadtime": 0,
+      "min_lotsize": 0,
+      "mult_lotsize": 1
     },
-    "RM1": {
-      "L1": 0,
-      "L2": 0
+    {
+      "product": "FG2",
+      "location": "L2",
+      "leadtime": 0,
+      "min_lotsize": 0,
+      "mult_lotsize": 1
     },
-    "RM2": {
-      "L1": 0,
-      "L2": 0
+    {
+      "product": "FG3",
+      "location": "L1",
+      "leadtime": 0,
+      "min_lotsize": 0,
+      "mult_lotsize": 1
+    },
+    {
+      "product": "FG3",
+      "location": "L2",
+      "leadtime": 0,
+      "min_lotsize": 0,
+      "mult_lotsize": 1
+    },
+    {
+      "product": "FG4",
+      "location": "L1",
+      "leadtime": 0,
+      "min_lotsize": 0,
+      "mult_lotsize": 1
+    },
+    {
+      "product": "FG4",
+      "location": "L2",
+      "leadtime": 0,
+      "min_lotsize": 0,
+      "mult_lotsize": 1
+    },
+    {
+      "product": "FG5",
+      "location": "L1",
+      "leadtime": 0,
+      "min_lotsize": 0,
+      "mult_lotsize": 1
+    },
+    {
+      "product": "FG5",
+      "location": "L2",
+      "leadtime": 0,
+      "min_lotsize": 0,
+      "mult_lotsize": 1
+    },
+    {
+      "product": "FG6",
+      "location": "L1",
+      "leadtime": 0,
+      "min_lotsize": 0,
+      "mult_lotsize": 1
+    },
+    {
+      "product": "FG6",
+      "location": "L2",
+      "leadtime": 0,
+      "min_lotsize": 0,
+      "mult_lotsize": 1
+    },
+    {
+      "product": "FG7",
+      "location": "L1",
+      "leadtime": 0,
+      "min_lotsize": 0,
+      "mult_lotsize": 1
+    },
+    {
+      "product": "FG7",
+      "location": "L2",
+      "leadtime": 0,
+      "min_lotsize": 0,
+      "mult_lotsize": 1
+    },
+    {
+      "product": "FG8",
+      "location": "L1",
+      "leadtime": 0,
+      "min_lotsize": 0,
+      "mult_lotsize": 1
+    },
+    {
+      "product": "FG8",
+      "location": "L2",
+      "leadtime": 0,
+      "min_lotsize": 0,
+      "mult_lotsize": 1
+    },
+    {
+      "product": "FG9",
+      "location": "L1",
+      "leadtime": 0,
+      "min_lotsize": 0,
+      "mult_lotsize": 1
+    },
+    {
+      "product": "FG9",
+      "location": "L2",
+      "leadtime": 0,
+      "min_lotsize": 0,
+      "mult_lotsize": 1
+    },
+    {
+      "product": "FG10",
+      "location": "L1",
+      "leadtime": 0,
+      "min_lotsize": 0,
+      "mult_lotsize": 1
+    },
+    {
+      "product": "FG10",
+      "location": "L2",
+      "leadtime": 0,
+      "min_lotsize": 0,
+      "mult_lotsize": 1
+    },
+    {
+      "product": "C1",
+      "location": "L1",
+      "leadtime": 0,
+      "min_lotsize": 0,
+      "mult_lotsize": 1
+    },
+    {
+      "product": "C1",
+      "location": "L2",
+      "leadtime": 0,
+      "min_lotsize": 0,
+      "mult_lotsize": 1
+    },
+    {
+      "product": "C2",
+      "location": "L1",
+      "leadtime": 0,
+      "min_lotsize": 0,
+      "mult_lotsize": 1
+    },
+    {
+      "product": "C2",
+      "location": "L2",
+      "leadtime": 0,
+      "min_lotsize": 0,
+      "mult_lotsize": 1
+    },
+    {
+      "product": "C3",
+      "location": "L1",
+      "leadtime": 0,
+      "min_lotsize": 0,
+      "mult_lotsize": 1
+    },
+    {
+      "product": "C3",
+      "location": "L2",
+      "leadtime": 0,
+      "min_lotsize": 0,
+      "mult_lotsize": 1
+    },
+    {
+      "product": "C4",
+      "location": "L1",
+      "leadtime": 0,
+      "min_lotsize": 0,
+      "mult_lotsize": 1
+    },
+    {
+      "product": "C4",
+      "location": "L2",
+      "leadtime": 0,
+      "min_lotsize": 0,
+      "mult_lotsize": 1
+    },
+    {
+      "product": "C5",
+      "location": "L1",
+      "leadtime": 0,
+      "min_lotsize": 0,
+      "mult_lotsize": 1
+    },
+    {
+      "product": "C5",
+      "location": "L2",
+      "leadtime": 0,
+      "min_lotsize": 0,
+      "mult_lotsize": 1
+    },
+    {
+      "product": "C6",
+      "location": "L1",
+      "leadtime": 0,
+      "min_lotsize": 0,
+      "mult_lotsize": 1
+    },
+    {
+      "product": "C6",
+      "location": "L2",
+      "leadtime": 0,
+      "min_lotsize": 0,
+      "mult_lotsize": 1
+    },
+    {
+      "product": "C7",
+      "location": "L1",
+      "leadtime": 0,
+      "min_lotsize": 0,
+      "mult_lotsize": 1
+    },
+    {
+      "product": "C7",
+      "location": "L2",
+      "leadtime": 0,
+      "min_lotsize": 0,
+      "mult_lotsize": 1
+    },
+    {
+      "product": "C8",
+      "location": "L1",
+      "leadtime": 0,
+      "min_lotsize": 0,
+      "mult_lotsize": 1
+    },
+    {
+      "product": "C8",
+      "location": "L2",
+      "leadtime": 0,
+      "min_lotsize": 0,
+      "mult_lotsize": 1
     }
-  },
-  "lt_buy": {
-    "FG1": {
-      "L1": 0,
-      "L2": 0
+  ],
+  "ship_rows": [
+    {
+      "product": "FG1",
+      "from": "L1",
+      "to": "L2",
+      "allowed": true,
+      "priority": 0,
+      "lt_ship": 0
     },
-    "C1": {
-      "L1": 0,
-      "L2": 0
+    {
+      "product": "FG1",
+      "from": "L2",
+      "to": "L1",
+      "allowed": true,
+      "priority": 0,
+      "lt_ship": 0
     },
-    "C2": {
-      "L1": 0,
-      "L2": 0
+    {
+      "product": "FG2",
+      "from": "L1",
+      "to": "L2",
+      "allowed": true,
+      "priority": 0,
+      "lt_ship": 0
     },
-    "RM1": {
-      "L1": 0,
-      "L2": 0
+    {
+      "product": "FG2",
+      "from": "L2",
+      "to": "L1",
+      "allowed": true,
+      "priority": 0,
+      "lt_ship": 0
     },
-    "RM2": {
-      "L1": 0,
-      "L2": 0
+    {
+      "product": "FG3",
+      "from": "L1",
+      "to": "L2",
+      "allowed": true,
+      "priority": 0,
+      "lt_ship": 0
+    },
+    {
+      "product": "FG3",
+      "from": "L2",
+      "to": "L1",
+      "allowed": true,
+      "priority": 0,
+      "lt_ship": 0
+    },
+    {
+      "product": "FG4",
+      "from": "L1",
+      "to": "L2",
+      "allowed": true,
+      "priority": 0,
+      "lt_ship": 0
+    },
+    {
+      "product": "FG4",
+      "from": "L2",
+      "to": "L1",
+      "allowed": true,
+      "priority": 0,
+      "lt_ship": 0
+    },
+    {
+      "product": "FG5",
+      "from": "L1",
+      "to": "L2",
+      "allowed": true,
+      "priority": 0,
+      "lt_ship": 0
+    },
+    {
+      "product": "FG5",
+      "from": "L2",
+      "to": "L1",
+      "allowed": true,
+      "priority": 0,
+      "lt_ship": 0
+    },
+    {
+      "product": "FG6",
+      "from": "L1",
+      "to": "L2",
+      "allowed": true,
+      "priority": 0,
+      "lt_ship": 0
+    },
+    {
+      "product": "FG6",
+      "from": "L2",
+      "to": "L1",
+      "allowed": true,
+      "priority": 0,
+      "lt_ship": 0
+    },
+    {
+      "product": "FG7",
+      "from": "L1",
+      "to": "L2",
+      "allowed": true,
+      "priority": 0,
+      "lt_ship": 0
+    },
+    {
+      "product": "FG7",
+      "from": "L2",
+      "to": "L1",
+      "allowed": true,
+      "priority": 0,
+      "lt_ship": 0
+    },
+    {
+      "product": "FG8",
+      "from": "L1",
+      "to": "L2",
+      "allowed": true,
+      "priority": 0,
+      "lt_ship": 0
+    },
+    {
+      "product": "FG8",
+      "from": "L2",
+      "to": "L1",
+      "allowed": true,
+      "priority": 0,
+      "lt_ship": 0
+    },
+    {
+      "product": "FG9",
+      "from": "L1",
+      "to": "L2",
+      "allowed": true,
+      "priority": 0,
+      "lt_ship": 0
+    },
+    {
+      "product": "FG9",
+      "from": "L2",
+      "to": "L1",
+      "allowed": true,
+      "priority": 0,
+      "lt_ship": 0
+    },
+    {
+      "product": "FG10",
+      "from": "L1",
+      "to": "L2",
+      "allowed": true,
+      "priority": 0,
+      "lt_ship": 0
+    },
+    {
+      "product": "FG10",
+      "from": "L2",
+      "to": "L1",
+      "allowed": true,
+      "priority": 0,
+      "lt_ship": 0
+    },
+    {
+      "product": "C1",
+      "from": "L1",
+      "to": "L2",
+      "allowed": true,
+      "priority": 0,
+      "lt_ship": 0
+    },
+    {
+      "product": "C1",
+      "from": "L2",
+      "to": "L1",
+      "allowed": true,
+      "priority": 0,
+      "lt_ship": 0
+    },
+    {
+      "product": "C2",
+      "from": "L1",
+      "to": "L2",
+      "allowed": true,
+      "priority": 0,
+      "lt_ship": 0
+    },
+    {
+      "product": "C2",
+      "from": "L2",
+      "to": "L1",
+      "allowed": true,
+      "priority": 0,
+      "lt_ship": 0
+    },
+    {
+      "product": "C3",
+      "from": "L1",
+      "to": "L2",
+      "allowed": true,
+      "priority": 0,
+      "lt_ship": 0
+    },
+    {
+      "product": "C3",
+      "from": "L2",
+      "to": "L1",
+      "allowed": true,
+      "priority": 0,
+      "lt_ship": 0
+    },
+    {
+      "product": "C4",
+      "from": "L1",
+      "to": "L2",
+      "allowed": true,
+      "priority": 0,
+      "lt_ship": 0
+    },
+    {
+      "product": "C4",
+      "from": "L2",
+      "to": "L1",
+      "allowed": true,
+      "priority": 0,
+      "lt_ship": 0
+    },
+    {
+      "product": "C5",
+      "from": "L1",
+      "to": "L2",
+      "allowed": true,
+      "priority": 0,
+      "lt_ship": 0
+    },
+    {
+      "product": "C5",
+      "from": "L2",
+      "to": "L1",
+      "allowed": true,
+      "priority": 0,
+      "lt_ship": 0
+    },
+    {
+      "product": "C6",
+      "from": "L1",
+      "to": "L2",
+      "allowed": true,
+      "priority": 0,
+      "lt_ship": 0
+    },
+    {
+      "product": "C6",
+      "from": "L2",
+      "to": "L1",
+      "allowed": true,
+      "priority": 0,
+      "lt_ship": 0
+    },
+    {
+      "product": "C7",
+      "from": "L1",
+      "to": "L2",
+      "allowed": true,
+      "priority": 0,
+      "lt_ship": 0
+    },
+    {
+      "product": "C7",
+      "from": "L2",
+      "to": "L1",
+      "allowed": true,
+      "priority": 0,
+      "lt_ship": 0
+    },
+    {
+      "product": "C8",
+      "from": "L1",
+      "to": "L2",
+      "allowed": true,
+      "priority": 0,
+      "lt_ship": 0
+    },
+    {
+      "product": "C8",
+      "from": "L2",
+      "to": "L1",
+      "allowed": true,
+      "priority": 0,
+      "lt_ship": 0
     }
-  },
-  "min_lot_make": {
-    "FG1": {
-      "L1": 0,
-      "L2": 0
-    },
-    "C1": {
-      "L1": 0,
-      "L2": 0
-    },
-    "C2": {
-      "L1": 0,
-      "L2": 0
-    },
-    "RM1": {
-      "L1": 0,
-      "L2": 0
-    },
-    "RM2": {
-      "L1": 0,
-      "L2": 0
-    }
-  },
-  "multiple_lot_make": {
-    "FG1": {
-      "L1": 1,
-      "L2": 1
-    },
-    "C1": {
-      "L1": 1,
-      "L2": 1
-    },
-    "C2": {
-      "L1": 1,
-      "L2": 1
-    },
-    "RM1": {
-      "L1": 1,
-      "L2": 1
-    },
-    "RM2": {
-      "L1": 1,
-      "L2": 1
-    }
-  },
-  "min_lot_buy": {
-    "FG1": {
-      "L1": 0,
-      "L2": 0
-    },
-    "C1": {
-      "L1": 0,
-      "L2": 0
-    },
-    "C2": {
-      "L1": 0,
-      "L2": 0
-    },
-    "RM1": {
-      "L1": 0,
-      "L2": 0
-    },
-    "RM2": {
-      "L1": 0,
-      "L2": 0
-    }
-  },
-  "multiple_lot_buy": {
-    "FG1": {
-      "L1": 1,
-      "L2": 1
-    },
-    "C1": {
-      "L1": 1,
-      "L2": 1
-    },
-    "C2": {
-      "L1": 1,
-      "L2": 1
-    },
-    "RM1": {
-      "L1": 1,
-      "L2": 1
-    },
-    "RM2": {
-      "L1": 1,
-      "L2": 1
-    }
-  },
-  "ship_allowed": {
-    "RM2": {
-      "L2": {
-        "L1": true
-      }
-    },
-    "C2": {
-      "L2": {
-        "L1": true
-      }
-    },
-    "C1": {
-      "L2": {
-        "L1": true
-      }
-    },
-    "FG1": {
-      "L2": {
-        "L1": true
-      }
-    },
-    "RM1": {
-      "L2": {
-        "L1": true
-      }
-    }
-  },
-  "ship_priority": {
-    "RM2": {
-      "L2": {
-        "L1": 0
-      }
-    },
-    "C2": {
-      "L2": {
-        "L1": 0
-      }
-    },
-    "C1": {
-      "L2": {
-        "L1": 0
-      }
-    },
-    "FG1": {
-      "L2": {
-        "L1": 0
-      }
-    },
-    "RM1": {
-      "L2": {
-        "L1": 0
-      }
-    }
-  },
-  "lt_ship": {
-    "RM2": {
-      "L2": {
-        "L1": 1
-      }
-    },
-    "C2": {
-      "L2": {
-        "L1": 1
-      }
-    },
-    "C1": {
-      "L2": {
-        "L1": 1
-      }
-    },
-    "FG1": {
-      "L2": {
-        "L1": 1
-      }
-    },
-    "RM1": {
-      "L2": {
-        "L1": 1
-      }
-    }
-  },
+  ],
   "ship_cap": {
-    "RM2": {
+    "FG1": {
+      "L1": {
+        "L2": {
+          "P1": 1000000000,
+          "P2": 1000000000,
+          "P3": 1000000000,
+          "P4": 1000000000
+        }
+      },
       "L2": {
         "L1": {
-          "P1": 999,
-          "P2": 999,
-          "P3": 999,
-          "P4": 999
+          "P1": 1000000000,
+          "P2": 1000000000,
+          "P3": 1000000000,
+          "P4": 1000000000
         }
       }
     },
-    "C2": {
+    "FG2": {
+      "L1": {
+        "L2": {
+          "P1": 1000000000,
+          "P2": 1000000000,
+          "P3": 1000000000,
+          "P4": 1000000000
+        }
+      },
       "L2": {
         "L1": {
-          "P1": 999,
-          "P2": 999,
-          "P3": 999,
-          "P4": 999
+          "P1": 1000000000,
+          "P2": 1000000000,
+          "P3": 1000000000,
+          "P4": 1000000000
+        }
+      }
+    },
+    "FG3": {
+      "L1": {
+        "L2": {
+          "P1": 1000000000,
+          "P2": 1000000000,
+          "P3": 1000000000,
+          "P4": 1000000000
+        }
+      },
+      "L2": {
+        "L1": {
+          "P1": 1000000000,
+          "P2": 1000000000,
+          "P3": 1000000000,
+          "P4": 1000000000
+        }
+      }
+    },
+    "FG4": {
+      "L1": {
+        "L2": {
+          "P1": 1000000000,
+          "P2": 1000000000,
+          "P3": 1000000000,
+          "P4": 1000000000
+        }
+      },
+      "L2": {
+        "L1": {
+          "P1": 1000000000,
+          "P2": 1000000000,
+          "P3": 1000000000,
+          "P4": 1000000000
+        }
+      }
+    },
+    "FG5": {
+      "L1": {
+        "L2": {
+          "P1": 1000000000,
+          "P2": 1000000000,
+          "P3": 1000000000,
+          "P4": 1000000000
+        }
+      },
+      "L2": {
+        "L1": {
+          "P1": 1000000000,
+          "P2": 1000000000,
+          "P3": 1000000000,
+          "P4": 1000000000
+        }
+      }
+    },
+    "FG6": {
+      "L1": {
+        "L2": {
+          "P1": 1000000000,
+          "P2": 1000000000,
+          "P3": 1000000000,
+          "P4": 1000000000
+        }
+      },
+      "L2": {
+        "L1": {
+          "P1": 1000000000,
+          "P2": 1000000000,
+          "P3": 1000000000,
+          "P4": 1000000000
+        }
+      }
+    },
+    "FG7": {
+      "L1": {
+        "L2": {
+          "P1": 1000000000,
+          "P2": 1000000000,
+          "P3": 1000000000,
+          "P4": 1000000000
+        }
+      },
+      "L2": {
+        "L1": {
+          "P1": 1000000000,
+          "P2": 1000000000,
+          "P3": 1000000000,
+          "P4": 1000000000
+        }
+      }
+    },
+    "FG8": {
+      "L1": {
+        "L2": {
+          "P1": 1000000000,
+          "P2": 1000000000,
+          "P3": 1000000000,
+          "P4": 1000000000
+        }
+      },
+      "L2": {
+        "L1": {
+          "P1": 1000000000,
+          "P2": 1000000000,
+          "P3": 1000000000,
+          "P4": 1000000000
+        }
+      }
+    },
+    "FG9": {
+      "L1": {
+        "L2": {
+          "P1": 1000000000,
+          "P2": 1000000000,
+          "P3": 1000000000,
+          "P4": 1000000000
+        }
+      },
+      "L2": {
+        "L1": {
+          "P1": 1000000000,
+          "P2": 1000000000,
+          "P3": 1000000000,
+          "P4": 1000000000
+        }
+      }
+    },
+    "FG10": {
+      "L1": {
+        "L2": {
+          "P1": 1000000000,
+          "P2": 1000000000,
+          "P3": 1000000000,
+          "P4": 1000000000
+        }
+      },
+      "L2": {
+        "L1": {
+          "P1": 1000000000,
+          "P2": 1000000000,
+          "P3": 1000000000,
+          "P4": 1000000000
         }
       }
     },
     "C1": {
+      "L1": {
+        "L2": {
+          "P1": 1000000000,
+          "P2": 1000000000,
+          "P3": 1000000000,
+          "P4": 1000000000
+        }
+      },
       "L2": {
         "L1": {
-          "P1": 999,
-          "P2": 999,
-          "P3": 999,
-          "P4": 999
+          "P1": 1000000000,
+          "P2": 1000000000,
+          "P3": 1000000000,
+          "P4": 1000000000
         }
       }
     },
-    "FG1": {
+    "C2": {
+      "L1": {
+        "L2": {
+          "P1": 1000000000,
+          "P2": 1000000000,
+          "P3": 1000000000,
+          "P4": 1000000000
+        }
+      },
       "L2": {
         "L1": {
-          "P1": 999,
-          "P2": 999,
-          "P3": 999,
-          "P4": 999
+          "P1": 1000000000,
+          "P2": 1000000000,
+          "P3": 1000000000,
+          "P4": 1000000000
         }
       }
     },
-    "RM1": {
+    "C3": {
+      "L1": {
+        "L2": {
+          "P1": 1000000000,
+          "P2": 1000000000,
+          "P3": 1000000000,
+          "P4": 1000000000
+        }
+      },
       "L2": {
         "L1": {
-          "P1": 999,
-          "P2": 999,
-          "P3": 999,
-          "P4": 999
+          "P1": 1000000000,
+          "P2": 1000000000,
+          "P3": 1000000000,
+          "P4": 1000000000
+        }
+      }
+    },
+    "C4": {
+      "L1": {
+        "L2": {
+          "P1": 1000000000,
+          "P2": 1000000000,
+          "P3": 1000000000,
+          "P4": 1000000000
+        }
+      },
+      "L2": {
+        "L1": {
+          "P1": 1000000000,
+          "P2": 1000000000,
+          "P3": 1000000000,
+          "P4": 1000000000
+        }
+      }
+    },
+    "C5": {
+      "L1": {
+        "L2": {
+          "P1": 1000000000,
+          "P2": 1000000000,
+          "P3": 1000000000,
+          "P4": 1000000000
+        }
+      },
+      "L2": {
+        "L1": {
+          "P1": 1000000000,
+          "P2": 1000000000,
+          "P3": 1000000000,
+          "P4": 1000000000
+        }
+      }
+    },
+    "C6": {
+      "L1": {
+        "L2": {
+          "P1": 1000000000,
+          "P2": 1000000000,
+          "P3": 1000000000,
+          "P4": 1000000000
+        }
+      },
+      "L2": {
+        "L1": {
+          "P1": 1000000000,
+          "P2": 1000000000,
+          "P3": 1000000000,
+          "P4": 1000000000
+        }
+      }
+    },
+    "C7": {
+      "L1": {
+        "L2": {
+          "P1": 1000000000,
+          "P2": 1000000000,
+          "P3": 1000000000,
+          "P4": 1000000000
+        }
+      },
+      "L2": {
+        "L1": {
+          "P1": 1000000000,
+          "P2": 1000000000,
+          "P3": 1000000000,
+          "P4": 1000000000
+        }
+      }
+    },
+    "C8": {
+      "L1": {
+        "L2": {
+          "P1": 1000000000,
+          "P2": 1000000000,
+          "P3": 1000000000,
+          "P4": 1000000000
+        }
+      },
+      "L2": {
+        "L1": {
+          "P1": 1000000000,
+          "P2": 1000000000,
+          "P3": 1000000000,
+          "P4": 1000000000
         }
       }
     }

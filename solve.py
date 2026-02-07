@@ -11,7 +11,103 @@ import pyomo.environ as pyo
 from mrp_model import MRPData, build_mrp_model
 
 
+def _apply_bom_rows(raw: Dict[str, Any]) -> Dict[str, Any]:
+    if "bom_rows" not in raw:
+        return raw
+
+    bom: Dict[str, Dict[str, Dict[str, float]]] = {}
+    lt_make = raw.get("lt_make", {})
+    min_lot_make = raw.get("min_lot_make", {})
+    mult_lot_make = raw.get("multiple_lot_make", {})
+
+    for row in raw.get("bom_rows", []):
+        parent = str(row.get("parent", "")).strip()
+        location = str(row.get("location", "")).strip()
+        component = str(row.get("component", "")).strip()
+        if not parent or not location or not component:
+            continue
+        qty = row.get("value", row.get("qty", 0))
+        bom.setdefault(parent, {}).setdefault(location, {})[component] = float(qty)
+
+        if "lt_make" in row and row["lt_make"] is not None:
+            lt_make.setdefault(parent, {})[location] = int(row["lt_make"])
+        if "min_lot_make" in row and row["min_lot_make"] is not None:
+            min_lot_make.setdefault(parent, {})[location] = float(row["min_lot_make"])
+        if "multiple_lot_make" in row and row["multiple_lot_make"] is not None:
+            mult_lot_make.setdefault(parent, {})[location] = int(row["multiple_lot_make"])
+
+    raw["bom"] = bom
+    if lt_make:
+        raw["lt_make"] = lt_make
+    if min_lot_make:
+        raw["min_lot_make"] = min_lot_make
+    if mult_lot_make:
+        raw["multiple_lot_make"] = mult_lot_make
+    return raw
+
+
+def _apply_ship_rows(raw: Dict[str, Any]) -> Dict[str, Any]:
+    if "ship_rows" not in raw:
+        return raw
+
+    ship_allowed: Dict[str, Dict[str, Dict[str, bool]]] = {}
+    ship_priority: Dict[str, Dict[str, Dict[str, int]]] = {}
+    lt_ship: Dict[str, Dict[str, Dict[str, int]]] = {}
+
+    for row in raw.get("ship_rows", []):
+        prod = str(row.get("product", "")).strip()
+        lf = str(row.get("from", "")).strip()
+        lt = str(row.get("to", "")).strip()
+        if not prod or not lf or not lt:
+            continue
+        allowed = row.get("allowed", True)
+        ship_allowed.setdefault(prod, {}).setdefault(lf, {})[lt] = bool(allowed)
+        if row.get("priority") is not None:
+            ship_priority.setdefault(prod, {}).setdefault(lf, {})[lt] = int(row["priority"])
+        if row.get("lt_ship") is not None:
+            lt_ship.setdefault(prod, {}).setdefault(lf, {})[lt] = int(row["lt_ship"])
+
+    raw["ship_allowed"] = ship_allowed
+    if ship_priority:
+        raw["ship_priority"] = ship_priority
+    if lt_ship:
+        raw["lt_ship"] = lt_ship
+    return raw
+
+
+def _apply_purchasing_rows(raw: Dict[str, Any]) -> Dict[str, Any]:
+    if "purchasing_rows" not in raw:
+        return raw
+
+    lt_buy = raw.get("lt_buy", {})
+    min_lot_buy = raw.get("min_lot_buy", {})
+    mult_lot_buy = raw.get("multiple_lot_buy", {})
+
+    for row in raw.get("purchasing_rows", []):
+        prod = str(row.get("product", "")).strip()
+        loc = str(row.get("location", "")).strip()
+        if not prod or not loc:
+            continue
+        if row.get("leadtime") is not None:
+            lt_buy.setdefault(prod, {})[loc] = int(row["leadtime"])
+        if row.get("min_lotsize") is not None:
+            min_lot_buy.setdefault(prod, {})[loc] = float(row["min_lotsize"])
+        if row.get("mult_lotsize") is not None:
+            mult_lot_buy.setdefault(prod, {})[loc] = int(row["mult_lotsize"])
+
+    if lt_buy:
+        raw["lt_buy"] = lt_buy
+    if min_lot_buy:
+        raw["min_lot_buy"] = min_lot_buy
+    if mult_lot_buy:
+        raw["multiple_lot_buy"] = mult_lot_buy
+    return raw
+
+
 def build_mrpdata(raw: Dict[str, Any]) -> MRPData:
+    raw = _apply_bom_rows(raw)
+    raw = _apply_ship_rows(raw)
+    raw = _apply_purchasing_rows(raw)
     periods = raw["periods"]
     locations = raw.get("locations") or ["LOC1"]
 
@@ -130,66 +226,88 @@ def read_excel_to_raw(path: str) -> Dict[str, Any]:
         return [str(v) for v in df[col].dropna().tolist()]
 
     raw: Dict[str, Any] = {}
-    raw["products"] = read_list("products", "product")
-    raw["periods"] = read_list("periods", "period")
-    raw["locations"] = read_list("locations", "location")
-    if "resources" in xls.sheet_names:
-        raw["resources"] = read_list("resources", "resource")
+    raw["products"] = read_list("Products", "product")
+    raw["periods"] = read_list("Time_periods", "period")
+    raw["locations"] = read_list("Locations", "location")
+    if "Resources" in xls.sheet_names:
+        raw["resources"] = read_list("Resources", "resource")
 
-    if "demand" in xls.sheet_names:
-        df = pd.read_excel(xls, sheet_name="demand")
+    if "Independent_Demand" in xls.sheet_names:
+        df = pd.read_excel(xls, sheet_name="Independent_Demand")
         raw["demand"] = _df_to_dict(df, ["product", "location", "period"])
 
-    if "initial_inventory" in xls.sheet_names:
-        df = pd.read_excel(xls, sheet_name="initial_inventory")
+    if "Initial_Inventory" in xls.sheet_names:
+        df = pd.read_excel(xls, sheet_name="Initial_Inventory")
         raw["initial_inventory"] = _df_to_dict(df, ["product", "location"])
 
-    if "capacity" in xls.sheet_names:
-        df = pd.read_excel(xls, sheet_name="capacity")
+    if "Resource_Capacity" in xls.sheet_names:
+        df = pd.read_excel(xls, sheet_name="Resource_Capacity")
         raw["capacity"] = _df_to_dict(df, ["resource", "location", "period"])
 
-    if "cap_buy" in xls.sheet_names:
-        df = pd.read_excel(xls, sheet_name="cap_buy")
+    if "Purchasing_Capacity" in xls.sheet_names:
+        df = pd.read_excel(xls, sheet_name="Purchasing_Capacity")
         raw["cap_buy"] = _df_to_dict(df, ["product", "location", "period"])
 
-    if "bom" in xls.sheet_names:
-        df = pd.read_excel(xls, sheet_name="bom").rename(columns={"component": "comp"})
-        raw["bom"] = _df_to_dict(df, ["parent", "location", "comp"])
+    if "BOM" in xls.sheet_names:
+        df = pd.read_excel(xls, sheet_name="BOM")
+        # Keep JSON aligned with Excel: store BOM rows directly (including lt/make lots)
+        bom_rows = []
+        for row in df.to_dict(orient="records"):
+            rec = {
+                "parent": row.get("parent"),
+                "location": row.get("location"),
+                "component": row.get("component"),
+                "value": row.get("value", row.get("qty")),
+            }
+            if "lt_make" in df.columns:
+                rec["lt_make"] = row.get("lt_make")
+            if "min_lot_make" in df.columns:
+                rec["min_lot_make"] = row.get("min_lot_make")
+            if "multiple_lot_make" in df.columns:
+                rec["multiple_lot_make"] = row.get("multiple_lot_make")
+            bom_rows.append(rec)
+        raw["bom_rows"] = bom_rows
 
-    if "routing" in xls.sheet_names:
-        df = pd.read_excel(xls, sheet_name="routing")
+    if "Routing" in xls.sheet_names:
+        df = pd.read_excel(xls, sheet_name="Routing")
         raw["routing"] = _df_to_dict(df, ["product", "location", "resource"])
 
-    if "proc_type" in xls.sheet_names:
-        df = pd.read_excel(xls, sheet_name="proc_type")
+    if "Proc_Type" in xls.sheet_names:
+        df = pd.read_excel(xls, sheet_name="Proc_Type")
         raw["proc_type"] = _df_to_dict(df, ["product", "location"], value_col="proc_type")
 
-    for sheet, key in [
-        ("lt_make", "lt_make"),
-        ("lt_buy", "lt_buy"),
-        ("min_lot_make", "min_lot_make"),
-        ("multiple_lot_make", "multiple_lot_make"),
-        ("min_lot_buy", "min_lot_buy"),
-        ("multiple_lot_buy", "multiple_lot_buy"),
-    ]:
-        if sheet in xls.sheet_names:
-            df = pd.read_excel(xls, sheet_name=sheet)
-            raw[key] = _df_to_dict(df, ["product", "location"])
+    if "Purchasing" in xls.sheet_names:
+        df = pd.read_excel(xls, sheet_name="Purchasing")
+        purchasing_rows = []
+        for row in df.to_dict(orient="records"):
+            purchasing_rows.append({
+                "product": row.get("product"),
+                "location": row.get("location"),
+                "leadtime": row.get("leadtime"),
+                "min_lotsize": row.get("min lotsize"),
+                "mult_lotsize": row.get("mult lotsize"),
+            })
+        raw["purchasing_rows"] = purchasing_rows
 
-    if "ship_allowed" in xls.sheet_names:
-        df = pd.read_excel(xls, sheet_name="ship_allowed")
-        raw["ship_allowed"] = _df_to_dict(df, ["product", "from", "to"], value_col="allowed")
+    if "TransportationLanes" in xls.sheet_names:
+        df = pd.read_excel(xls, sheet_name="TransportationLanes")
+        ship_rows = []
+        for row in df.to_dict(orient="records"):
+            rec = {
+                "product": row.get("product"),
+                "from": row.get("from"),
+                "to": row.get("to"),
+                "allowed": row.get("allowed", True),
+            }
+            if "priority" in df.columns:
+                rec["priority"] = row.get("priority")
+            if "lt_ship" in df.columns:
+                rec["lt_ship"] = row.get("lt_ship")
+            ship_rows.append(rec)
+        raw["ship_rows"] = ship_rows
 
-    if "ship_priority" in xls.sheet_names:
-        df = pd.read_excel(xls, sheet_name="ship_priority")
-        raw["ship_priority"] = _df_to_dict(df, ["product", "from", "to"], value_col="priority")
-
-    if "lt_ship" in xls.sheet_names:
-        df = pd.read_excel(xls, sheet_name="lt_ship")
-        raw["lt_ship"] = _df_to_dict(df, ["product", "from", "to"])
-
-    if "ship_cap" in xls.sheet_names:
-        df = pd.read_excel(xls, sheet_name="ship_cap")
+    if "Transportation_Capacity" in xls.sheet_names:
+        df = pd.read_excel(xls, sheet_name="Transportation_Capacity")
         raw["ship_cap"] = _df_to_dict(df, ["product", "from", "to", "period"])
 
     raw["allow_backlog"] = True
@@ -249,6 +367,42 @@ def write_output_excel(path: str, m: pyo.ConcreteModel):
 
         df = pd.DataFrame(rows)
         df.to_excel(writer, sheet_name="result", index=False)
+
+        # Resource consumption (aggregate)
+        res_rows = []
+        for r in m.R:
+            for l in m.L:
+                vals = []
+                for t in m.T:
+                    cons = sum(
+                        pyo.value(m.r_make[p, l, t]) * pyo.value(m.routing[p, l, r])
+                        for p in m.P
+                    )
+                    vals.append(clean(cons))
+                res_rows.append({
+                    "resource": r,
+                    "location": l,
+                    **{periods[i]: vals[i] for i in range(len(periods))}
+                })
+        pd.DataFrame(res_rows).to_excel(writer, sheet_name="Resource_Consumption", index=False)
+
+        # Resource consumption breakdown by product/location
+        detail_rows = []
+        for r in m.R:
+            for l in m.L:
+                for p in m.P:
+                    vals = []
+                    for t in m.T:
+                        cons = pyo.value(m.r_make[p, l, t]) * pyo.value(m.routing[p, l, r])
+                        vals.append(clean(cons))
+                    if any(v != 0.0 for v in vals):
+                        detail_rows.append({
+                            "resource": r,
+                            "location": l,
+                            "product": p,
+                            **{periods[i]: vals[i] for i in range(len(periods))}
+                        })
+        pd.DataFrame(detail_rows).to_excel(writer, sheet_name="Resource_Consumption_Detail", index=False)
 
 
 def solve_three_phase(m: pyo.ConcreteModel, solver_name: str = "highs"):
